@@ -6,7 +6,7 @@ library("ggdark")
 library(lubridate)
 
 #sst <- readr::read_delim("./data/SST/Ostia_SST_2006_2022.txt")
-sst <- read_delim("C:/Users/Phillip Haupt/Documents/DATA/ostia_sst_2006_2023/Ostia_SST_2006_2023.txt",
+sst <- read_delim("data/Ostia_SST_2006_2023.txt",
                   col_types = cols(`time` = col_datetime("%Y-%m-%d %H:%M:%S"))
 )
 

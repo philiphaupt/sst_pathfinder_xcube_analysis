@@ -38,9 +38,69 @@ sst %>%
   scale_fill_manual(values = c("grey", "red"),
                     labels = c("Below 20°C", "Over 20°C"),
                     guide = guide_legend(title = "Temperature Range"))+
-  # coord_flip()
   theme(text = element_text(size = 16))
 
+# ICES poster blue and yellow - 
+ices_plot <- sst %>%
+  filter(year %!in% c(2006, 2024)) %>% 
+  mutate(sst_rnd = round(sst_C, 0)) %>%
+  ggplot(aes(x = sst_rnd, fill = sst_rnd >= 20)) +
+  geom_histogram(binwidth = 1) +
+  labs(x = expression("Sea Surface Temperature " (degree*C)), 
+       y = "Number of days (in a year at temperature)") +
+  facet_wrap(~ year) +
+  theme_bw() +
+  geom_vline(xintercept = 20, colour = "#237194", linetype = "dashed") +
+  scale_fill_manual(values = c("grey", "#faa32b"),#"#00bbd6", #f1f1f2"
+                    labels = c("Below 20°C", "Over 20°C"),
+                    guide = guide_legend(title = "Temperature Range")) +
+  theme(
+    text = element_text(size = 16),
+    strip.background = element_rect(fill = "#f1f1f2", colour = "#237194", size = 1),
+    strip.text = element_text(colour = "#237194"),
+    legend.position = c(0.95, 0.03),       # Position the legend inside the plot area
+    legend.justification = c("right", "bottom"), # Align the legend to the top-right corner
+    legend.background = element_rect(fill = alpha('white', 0.5)), # Optional: semi-transparent background
+    panel.border = element_rect(colour = "#237194", fill = NA, size = 0.95)
+    )
+
+# Print the plot
+print(ices_plot)
+
+# Define the path to the "outputs" directory
+output_dir <- file.path(getwd(), "outputs")
+
+# Create the "outputs" directory if it doesn't exist
+if (!dir.exists(output_dir)) {
+  dir.create(output_dir)
+}
+
+# Define the file path
+file_path <- file.path(output_dir, "n_days_at_temp_ices_plot_v2.png")
+
+# Save the plot with high resolution (300 DPI) and A5 size
+ggsave(
+  filename = file_path,
+  plot = ices_plot,
+  width = 21,  # A5 width in cm
+  height = 14.8,   # A5 height in cm
+  units = "cm",
+  dpi = 300      # High resolution for printing
+)
+
+
+
+#table
+over20Cdays <- sst %>%
+  filter(year %!in% c(2006, 2024)) %>% 
+  filter(month >= 6, month <= 10 ) %>% 
+  mutate(over20C = if_else(sst_C >=20, "over20", "under"),
+         before2018 = if_else(year < 2018, "before2018", "after2018")) %>% 
+  group_by(before2018, year, over20C) %>% 
+  summarise(days_per_year = n()) %>% 
+  ungroup() %>% 
+  group_by(before2018, over20C) %>% 
+  summarise(mean(days_per_year, na.rm = TRUE))  
   
 # Grey and red n days
 sst %>%

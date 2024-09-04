@@ -1,7 +1,5 @@
 # plot time series
 
-
-
 # PLOT DATA - fancy white back
 ggplot(data = sst, 
        aes(x = time, y = sst_C),
@@ -37,6 +35,7 @@ ggplot(data = sst,
        colour = sst_C)+
   scale_colour_gradient2(name = 'SST degrees',low = "blue", mid = "white" , high = "red",
                          midpoint=12.5)+ ##span = 0.4)+
+  
   stat_smooth(aes(
     colour = ..y.. 
   ),
@@ -48,6 +47,7 @@ ggplot(data = sst,
              ),
              alpha = 0.75,
              size = 0.8)+
+  scale_x_datetime(name = "Date", date_breaks = "1 year", date_labels = c("%Y"))+
   xlab("Date")+
   ylab("SST Degrees C")+
   # geom_tile(aes(x = time,
