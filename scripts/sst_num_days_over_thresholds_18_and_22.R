@@ -12,7 +12,7 @@ ggplot()+
 
 # temperature colour n days at temp
 sst %>%
-  filter(year %!in% c(2006, 2024)) %>% 
+  filter(year %!in% c(2006, 2025)) %>% 
   mutate(sst_rnd = round(sst_C, 0)) %>% 
   ggplot(aes(x = sst_rnd, fill = cut(sst_rnd, 9))) +
   geom_histogram(binwidth = 1) +
@@ -27,7 +27,7 @@ sst %>%
 # Grey and red - as used in Fishing news
 # Grey and red n days
 sst %>%
-  filter(year %!in% c(2006, 2024)) %>% 
+  filter(year %!in% c(2006, 2025)) %>% 
   mutate(sst_rnd = round(sst_C, 0)) %>%
   ggplot(aes(x = sst_rnd, fill = sst_rnd >= 20)) +
   geom_histogram(binwidth = 1) +
@@ -42,7 +42,7 @@ sst %>%
 
 # ICES poster blue and yellow - 
 ices_plot <- sst %>%
-  filter(year %!in% c(2006, 2024)) %>% 
+  filter(year %!in% c(2006, 2025)) %>% 
   mutate(sst_rnd = round(sst_C, 0)) %>%
   ggplot(aes(x = sst_rnd, fill = sst_rnd >= 20)) +
   geom_histogram(binwidth = 1) +
@@ -92,7 +92,7 @@ ggsave(
 
 #table
 over20Cdays <- sst %>%
-  filter(year %!in% c(2006, 2024)) %>% 
+  filter(year %!in% c(2006, 2025)) %>% 
   filter(month >= 6, month <= 10 ) %>% 
   mutate(over20C = if_else(sst_C >=20, "over20", "under"),
          before2018 = if_else(year < 2018, "before2018", "after2018")) %>% 
@@ -104,7 +104,7 @@ over20Cdays <- sst %>%
   
 # Grey and red n days
 sst %>%
-  filter(year %!in% c(2006, 2024)) %>% 
+  filter(year %!in% c(2006, 2025)) %>% 
   mutate(temp_range = ifelse(sst_C < 20, "Below 20", "Above 20"),
                              sst_trunc = trunc(sst_C)
                              ) %>%
